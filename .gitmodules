@@ -1,0 +1,6 @@
+[submodule "plugins/log"]
+	path = plugins/log
+	url = https://github.com/tauri-apps/tauri-plugin-log
+[submodule "plugins/store"]
+	path = plugins/store
+	url = https://github.com/tauri-apps/tauri-plugin-store
