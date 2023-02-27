@@ -6,10 +6,10 @@ use crate::Tray;
 use serde_repr::Deserialize_repr;
 #[cfg(feature = "system-tray")]
 use tauri::Manager;
-use tauri::{PhysicalPosition, PhysicalSize, Result, Runtime, Window};
+use tauri::{PhysicalPosition, PhysicalSize, Result, Runtime, Window, Monitor};
 
 /// Well known window positions.
-#[derive(Debug, Deserialize_repr)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize_repr)]
 #[repr(u16)]
 pub enum Position {
     TopLeft = 0,
@@ -37,21 +37,25 @@ pub enum Position {
 
 /// A [`Window`] extension that provides extra methods related to positioning.
 pub trait WindowExt {
-    /// Moves the [`Window`] to the given [`Position`]
+    /// Moves the [`Window`] to the given [`Position`] relative to the **current** [`Monitor`]
     ///
-    /// All positions are relative to the **current** screen.
+    /// # Panics
+    /// 
+    /// Panics if no monitor can be detected.
     fn move_window(&self, position: Position) -> Result<()>;
+
+    /// Moves the [`Window`] to the given [`Position`] relative to the given [`Monitor`]
+    fn move_window_with_monitor(&self, pos: Position, monitor: &Monitor) -> Result<()>;
 }
 
 impl<R: Runtime> WindowExt for Window<R> {
-    fn move_window(&self, pos: Position) -> Result<()> {
+    fn move_window_with_monitor(&self, pos: Position, monitor: &Monitor) -> Result<()> {
         use Position::*;
 
-        let screen = self.current_monitor()?.unwrap();
-        let screen_position = screen.position();
-        let screen_size = PhysicalSize::<i32> {
-            width: screen.size().width as i32,
-            height: screen.size().height as i32,
+        let monitor_position = monitor.position();
+        let monitor_size = PhysicalSize::<i32> {
+            width: monitor.size().width as i32,
+            height: monitor.size().height as i32,
         };
         let window_size = PhysicalSize::<i32> {
             width: self.outer_size()?.width as i32,
@@ -72,38 +76,38 @@ impl<R: Runtime> WindowExt for Window<R> {
             .unwrap_or_default();
 
         let physical_pos = match pos {
-            TopLeft => *screen_position,
+            TopLeft => *monitor_position,
             TopRight => PhysicalPosition {
-                x: screen_position.x + (screen_size.width - window_size.width),
-                y: screen_position.y,
+                x: monitor_position.x + (monitor_size.width - window_size.width),
+                y: monitor_position.y,
             },
             BottomLeft => PhysicalPosition {
-                x: screen_position.x,
-                y: screen_size.height - (window_size.height - screen_position.y),
+                x: monitor_position.x,
+                y: monitor_size.height - (window_size.height - monitor_position.y),
             },
             BottomRight => PhysicalPosition {
-                x: screen_position.x + (screen_size.width - window_size.width),
-                y: screen_size.height - (window_size.height - screen_position.y),
+                x: monitor_position.x + (monitor_size.width - window_size.width),
+                y: monitor_size.height - (window_size.height - monitor_position.y),
             },
             TopCenter => PhysicalPosition {
-                x: screen_position.x + ((screen_size.width / 2) - (window_size.width / 2)),
-                y: screen_position.y,
+                x: monitor_position.x + ((monitor_size.width / 2) - (window_size.width / 2)),
+                y: monitor_position.y,
             },
             BottomCenter => PhysicalPosition {
-                x: screen_position.x + ((screen_size.width / 2) - (window_size.width / 2)),
-                y: screen_size.height - (window_size.height - screen_position.y),
+                x: monitor_position.x + ((monitor_size.width / 2) - (window_size.width / 2)),
+                y: monitor_size.height - (window_size.height - monitor_position.y),
             },
             LeftCenter => PhysicalPosition {
-                x: screen_position.x,
-                y: screen_position.y + (screen_size.height / 2) - (window_size.height / 2),
+                x: monitor_position.x,
+                y: monitor_position.y + (monitor_size.height / 2) - (window_size.height / 2),
             },
             RightCenter => PhysicalPosition {
-                x: screen_position.x + (screen_size.width - window_size.width),
-                y: screen_position.y + (screen_size.height / 2) - (window_size.height / 2),
+                x: monitor_position.x + (monitor_size.width - window_size.width),
+                y: monitor_position.y + (monitor_size.height / 2) - (window_size.height / 2),
             },
             Center => PhysicalPosition {
-                x: screen_position.x + ((screen_size.width / 2) - (window_size.width / 2)),
-                y: screen_position.y + (screen_size.height / 2) - (window_size.height / 2),
+                x: monitor_position.x + ((monitor_size.width / 2) - (window_size.width / 2)),
+                y: monitor_position.y + (monitor_size.height / 2) - (window_size.height / 2),
             },
             #[cfg(feature = "system-tray")]
             TrayLeft => {
@@ -178,5 +182,11 @@ impl<R: Runtime> WindowExt for Window<R> {
         };
 
         self.set_position(tauri::Position::Physical(physical_pos))
+    }
+
+    fn move_window(&self, pos: Position) -> Result<()> {
+        let monitor = self.current_monitor()?.expect("No monitor detected");
+
+        self.move_window_with_monitor(pos, &monitor)
     }
 }
