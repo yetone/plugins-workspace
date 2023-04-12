@@ -32,7 +32,7 @@ pub(crate) fn to_json(v: PgValueRef) -> Result<JsonValue, Error> {
                 JsonValue::Null
             }
         }
-        "INT2" | "INT4" | "INT8" => {
+        "INT2" | "INT4" | "INT8" | "INTEGER" | "SMALLSERIAL" | "SERIAL" | "BIGSERIAL" => {
             if let Ok(v) = ValueRef::to_owned(&v).try_decode::<i64>() {
                 JsonValue::Number(v.into())
             } else {
