@@ -19,8 +19,9 @@ futures-core = "0.3"
 sqlx = { version = "0.6", features = ["runtime-tokio-rustls", "json", "time"] }
 time = "0.3"
 tokio = { version = "1", features = ["sync"] }
+rust_decimal = { version = "1", optional = true, default-features = false }
 
 [features]
 sqlite = ["sqlx/sqlite"]
 mysql = ["sqlx/mysql"]
-postgres = ["sqlx/postgres"]
+postgres = ["sqlx/postgres", "sqlx/decimal", "dep:rust_decimal"]

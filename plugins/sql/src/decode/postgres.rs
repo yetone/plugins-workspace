@@ -1,5 +1,6 @@
+use rust_decimal::prelude::ToPrimitive;
 use serde_json::Value as JsonValue;
-use sqlx::{postgres::PgValueRef, TypeInfo, Value, ValueRef};
+use sqlx::{postgres::PgValueRef, types::Decimal, TypeInfo, Value, ValueRef};
 use time::{Date, OffsetDateTime, PrimitiveDateTime, Time};
 
 use crate::Error;
@@ -13,6 +14,13 @@ pub(crate) fn to_json(v: PgValueRef) -> Result<JsonValue, Error> {
         "CHAR" | "VARCHAR" | "TEXT" | "NAME" => {
             if let Ok(v) = ValueRef::to_owned(&v).try_decode() {
                 JsonValue::String(v)
+            } else {
+                JsonValue::Null
+            }
+        }
+        "NUMERIC" => {
+            if let Ok(v) = ValueRef::to_owned(&v).try_decode::<Decimal>() {
+                JsonValue::from(v.to_f64())
             } else {
                 JsonValue::Null
             }
