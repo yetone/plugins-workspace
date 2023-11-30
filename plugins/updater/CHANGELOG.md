@@ -1,5 +1,11 @@
 # Changelog
 
+## \[2.0.0-alpha.5]
+
+- [`e7c72c9`](https://github.com/tauri-apps/plugins-workspace/commit/e7c72c9816d14a218e702dd233a6cfec957c2ee6)([#784](https://github.com/tauri-apps/plugins-workspace/pull/784)) Fix updater failing to extract the AppImage resulting in failing to update and also deleting the current version.
+- [`9db40a6`](https://github.com/tauri-apps/plugins-workspace/commit/9db40a6dc4f0811d8f80c6b6476b6b965d91ac6e)([#727](https://github.com/tauri-apps/plugins-workspace/pull/727)) Use escaped installer path to start the nsis/msi updater to prevent crashes if app name contained spaces.
+- [`0864c54`](https://github.com/tauri-apps/plugins-workspace/commit/0864c541474222c04eea309c404695503327f452)([#756](https://github.com/tauri-apps/plugins-workspace/pull/756)) The plugin now correctly replaces `arch`, `current_version` and `target` in query params again.
+
 ## \[2.0.0-alpha.3]
 
 - [`e438e0a`](https://github.com/tauri-apps/plugins-workspace/commit/e438e0a62d4b430a5159f05f13ecd397dd891a0d)([#676](https://github.com/tauri-apps/plugins-workspace/pull/676)) Update to @tauri-apps/api v2.0.0-alpha.11.

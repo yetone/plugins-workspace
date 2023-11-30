@@ -1,5 +1,9 @@
 # Changelog
 
+## \[2.0.0-alpha.5]
+
+- [`fc62ead`](https://github.com/tauri-apps/plugins-workspace/commit/fc62ead56515b64138b8342af1c5ec6071b715fc)([#721](https://github.com/tauri-apps/plugins-workspace/pull/721)) Fix `Uncaught TypeError: Cannot read properties of undefined (reading 'os')`
+
 ## \[2.0.0-alpha.4]
 
 - [`e438e0a`](https://github.com/tauri-apps/plugins-workspace/commit/e438e0a62d4b430a5159f05f13ecd397dd891a0d)([#676](https://github.com/tauri-apps/plugins-workspace/pull/676)) Update to @tauri-apps/api v2.0.0-alpha.11.

@@ -1,5 +1,9 @@
 # Changelog
 
+## \[2.0.0-alpha.5]
+
+- [`251852c`](https://github.com/tauri-apps/plugins-workspace/commit/251852ccbc97abe5765fb9663aab27701f3d7c7c)([#702](https://github.com/tauri-apps/plugins-workspace/pull/702)) Added `Builder::with_argon2`.
+
 ## \[2.0.0-alpha.4]
 
 - [`e438e0a`](https://github.com/tauri-apps/plugins-workspace/commit/e438e0a62d4b430a5159f05f13ecd397dd891a0d)([#676](https://github.com/tauri-apps/plugins-workspace/pull/676)) Update to @tauri-apps/api v2.0.0-alpha.11.

@@ -1,5 +1,9 @@
 # Changelog
 
+## \[2.0.0-alpha.4]
+
+- [`88d260d`](https://github.com/tauri-apps/plugins-workspace/commit/88d260d90130f9df4b9ce00c1ad1bf1e4b30b1c0)([#744](https://github.com/tauri-apps/plugins-workspace/pull/744)) Add second argument to `exists` function to specify base directory.
+
 ## \[2.0.0-alpha.3]
 
 - [`e438e0a`](https://github.com/tauri-apps/plugins-workspace/commit/e438e0a62d4b430a5159f05f13ecd397dd891a0d)([#676](https://github.com/tauri-apps/plugins-workspace/pull/676)) Update to @tauri-apps/api v2.0.0-alpha.11.
