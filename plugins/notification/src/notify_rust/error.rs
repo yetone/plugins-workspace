@@ -7,7 +7,7 @@ use std::{fmt, num};
 pub type Result<T> = ::std::result::Result<T, Error>;
 
 #[cfg(target_os = "macos")]
-pub use crate::macos::{ApplicationError, MacOsError, NotificationError};
+pub use crate::notify_rust::macos::{ApplicationError, MacOsError, NotificationError};
 
 /// The Error type.
 #[derive(Debug)]
